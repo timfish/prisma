@@ -1,9 +1,20 @@
-const { version, name } = require('../package.json')
+import { readFileSync } from 'fs'
+import * as path from 'path'
+
+function getVersion(): string | undefined {
+  try {
+    const json = readFileSync(path.resolve('..', 'package.json'), 'utf-8')
+    const pkgJson = JSON.parse(json) as { version: string }
+    return pkgJson.version
+  } catch (e) {
+    return undefined
+  }
+}
 
 export const GLOBAL_KEY = 'PRISMA_INSTRUMENTATION'
 
-export const VERSION = version as string
+export const VERSION = getVersion() as string
 
-export const NAME = name as string
+export const NAME = '@prisma/instrumentation'
 
 export const MODULE_NAME = 'prisma'
